@@ -29,7 +29,7 @@ def add_coupon(discount):
 
 
 def add_tax(tax):
-    if tax is not None and tax.stripe_id is not None:
+    if tax is not None and tax.stripe_id == '':
         tax_stripe = stripe.TaxRate.create(display_name=tax.name, percentage=tax.value, inclusive=True)
         tax.stripe_id = tax_stripe.id
         tax.save(update_fields=['stripe_id'])
