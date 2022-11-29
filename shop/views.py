@@ -3,7 +3,7 @@ from django.views.decorators.http import require_POST
 from .models import Item, OrderItem, Order
 from cart.forms import CartAddItemForm, OrderForm
 from cart.cart import Cart
-from .stripy import new_stripe_session
+from .stripy import new_stripe_session, add_tax
 from django_stripe.settings import DOMAIN
 
 
@@ -29,7 +29,7 @@ def new_order(request):
             order.tax = cd['tax']
             order.discount = cd['discount']
         order.save()
-
+        add_tax(order.tax)
         line = []
         for item in cart:
             line.append({'price_data': {'currency': 'usd', 'product_data': {'name': item['name'], },
