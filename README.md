@@ -22,7 +22,7 @@ python manage.py migrate --run-syncdb
 python manage.py createsuperuser
 python manage.py runserver
 ```
-Добавить свои товары, скидки и налоги
+Добавьте свои товары, скидки и налоги
 
 # Выполненные дополнительные тестовые задания:
 - Использование environment variables
