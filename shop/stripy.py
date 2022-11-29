@@ -10,7 +10,6 @@ def new_stripe_session(line, discount, tax, order, page_url):
     else:
         discount_id = None
     add_coupon(discount)
-    add_tax(tax)
     session = stripe.checkout.Session.create(
         line_items=line,
         discounts=[{'coupon': discount_id}],
