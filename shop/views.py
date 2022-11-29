@@ -29,12 +29,18 @@ def new_order(request):
             order.tax = cd['tax']
             order.discount = cd['discount']
         order.save()
-        add_tax(order.tax)
+        flag = False
+        if order.tax is not None:
+            add_tax(order.tax)
+            flag = True
         line = []
         for item in cart:
-            line.append({'price_data': {'currency': 'usd', 'product_data': {'name': item['name'], },
+            op = {'price_data': {'currency': 'usd', 'product_data': {'name': item['name'], },
                                         'unit_amount': item['price']},
-                         'quantity': item['quantity'], 'tax_rates': [order.tax.stripe_id]})
+                         'quantity': item['quantity']}
+            if flag:
+                op['tax_rates'] = [order.tax.stripe_id]
+            line.append(op)
             OrderItem.objects.create(order=order, item=item['item'], price=item['price'], quantity=item['quantity'])
 
         session = new_stripe_session(line, order.discount, order.tax, order, "/cart")
