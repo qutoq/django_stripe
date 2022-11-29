@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<main>
+  <section class="album py-5 text-center bg-white">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">Мини магазин</h1>
+        <p class="lead text-muted">Включен тестовый режим оплаты: принимается только карта с номером 4242 4242 4242 4242 и любыми дополнительными данными</p>
+        <p>
+          <a href="/admin" target="_blank" class="btn btn-primary my-2">Admin</a>
+          <a href="https://github.com/qutoq" target="_blank" class="btn btn-secondary my-2">Исходный код</a>
+        </p>
+      </div>
+    </div>
+  </section>
+  <div class="py-5 bg-light">
+    <div class="container">
+      <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+      <div class="row" data-masonry='{"percentPosition": true}'>
+        {% for item in items %}
+        <div class="col-md-4 col-lg-3 py-3">
+          <div class="card" >
+            {% if item.image %}
+            <img src="{{item.image.url}}"  alt="{{item.image.url}}" class="img-fluid">
+            {% endif %}
+            <h5 class="card-title truncate1"><a href="/item/{{ item.id }}" class="btn btn-success w-100">{{ item.name }}</a></h5>
+            <div class="card-body">
+              <div class="card-text truncate3"><p>{{ item.description|linebreaksbr }}</p></div>
+            </div>
+            <div class="card-footer">
+              ${{item.get_display_price}}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock content %}

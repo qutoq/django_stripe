@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <p> Ваш заказ оформлен! Его номер: {{order.id}} </p>
+    <p> Для получения заказа оплатите его прямо сечас. Другого шанса не будет.</p>
+    <p class="text-light">Не баг, а фича</p>
+    <a href="{% url 'shop:buy_order' order%}" class="btn btn-success my-2">Оплатить</a>
+</div>
+{% endblock %}
