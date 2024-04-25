@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  web:
+    container_name: web
+    build: .
+    image: app
+    command: python /code/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - 8000:8000
+    depends_on:
+      - migration
+      - db
+    networks:
+      - mynetwork
+
+  db:
+    container_name: db
+    image: postgres:15
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    networks:
+      - mynetwork
+
+  migration:
+    container_name: migration
+    image: app
+    command: python /code/manage.py migrate --run-syncdb --noinput
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+  
