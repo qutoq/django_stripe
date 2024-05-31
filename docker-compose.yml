@@ -3,37 +3,70 @@ version: '3.9'
 services:
   web:
     container_name: web
-    build: .
+    env_file:
+      - .env
+    build:
+      context: ./app
+      dockerfile: Dockerfile
     image: app
-    command: python /code/manage.py runserver 0.0.0.0:8000
+    #command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn django_stripe.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - .:/code
-    ports:
-      - 8000:8000
+      - ./app/:/home/app/web
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/staticfiles/media
+    #ports:
+    #  - 8000:8000
+    expose:
+      - 8000
     depends_on:
-      - migration
+      #- migration
       - db
-    networks:
+    networks: 
       - mynetwork
 
   db:
     container_name: db
     image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
     environment:
-      - "POSTGRES_HOST_AUTH_METHOD=trust"
+      #- "POSTGRES_HOST_AUTH_METHOD=trust"
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=dat
     networks:
       - mynetwork
 
-  migration:
-    container_name: migration
-    image: app
-    command: python /code/manage.py migrate --run-syncdb --noinput
+  nginx:
+    container_name: nginx
+    build: ./nginx
     volumes:
-      - .:/code
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/staticfiles/media
+    ports:
+      - 1337:80
     depends_on:
-      - db
+      - web
     networks:
       - mynetwork
+
+  #migration:
+  #  container_name: migration
+  #  image: app
+  #  command: python /code/manage.py migrate --run-syncdb --noinput
+  #  volumes:
+  #    - .:/code
+  #  depends_on:
+  #    - db
+  #  networks:
+  #    - mynetwork
+
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
 
 networks:
   mynetwork:
