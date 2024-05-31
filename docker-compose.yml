@@ -3,8 +3,6 @@ version: '3.9'
 services:
   web:
     container_name: web
-    env_file:
-      - .env
     build:
       context: ./app
       dockerfile: Dockerfile
@@ -22,6 +20,7 @@ services:
     depends_on:
       #- migration
       - db
+      - redis
     networks: 
       - mynetwork
 
@@ -48,6 +47,39 @@ services:
       - 1337:80
     depends_on:
       - web
+    networks:
+      - mynetwork
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    networks:
+      - mynetwork
+
+  celery:
+    container_name: celery
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    command: celery -A django_stripe worker --loglevel=info
+    volumes:
+      - ./app/:/home/app/web
+    depends_on:
+      - redis
+      - db
+    networks:
+      - mynetwork
+
+  flower:
+    container_name: flower
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    command: celery -A django_stripe flower --port=5555
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
     networks:
       - mynetwork
 

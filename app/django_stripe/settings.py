@@ -11,7 +11,7 @@ SECRET_KEY = env('django_key')
 STRIPE_SECRET_KEY = env('secret_key')
 SECRET_WEBHOOK = env('secret_webhook')
 DOMAIN = env('DOMAIN')
-DEBUG = env.bool('DEBUG')
+DEBUG = env('DEBUG')
 #ALLOWED_HOSTS = [env('HOST')]
 
 ALLOWED_HOSTS = ['*']
@@ -64,30 +64,29 @@ WSGI_APPLICATION = 'django_stripe.wsgi.application'
 CART_SESSION_ID = 'cart'
 
 
+
 #DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': 'postgres',
-#        'USER': 'postgres',
-#        'PASSWORD': 'postgres',
-#        'HOST': 'db',
-#        'PORT': 5432
-#        # 'ENGINE': 'django.db.backends.sqlite3',
-#        # 'NAME': BASE_DIR / 'db.sqlite3',
+#    "default": {
+#        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+#        "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
+#        "USER": os.environ.get("SQL_USER", "user"),
+#        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+#        "HOST": os.environ.get("SQL_HOST", "localhost"),
+#        "PORT": os.environ.get("SQL_PORT", "5432"),
 #    }
 #}
 
-
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
-        "USER": os.environ.get("SQL_USER", "user"),
-        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
-        "HOST": os.environ.get("SQL_HOST", "localhost"),
-        "PORT": os.environ.get("SQL_PORT", "5432"),
+        "ENGINE": env("SQL_ENGINE"),
+        "NAME": env("SQL_DATABASE"),
+        "USER": env("SQL_USER"),
+        "PASSWORD": env("SQL_PASSWORD"),
+        "HOST": env("SQL_HOST"),
+        "PORT": env("SQL_PORT"),
     }
 }
+
 
 
 
@@ -105,6 +104,17 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_PORT = env("EMAIL_PORT")
+EMAIL_USE_TLS = bool(env("EMAIL_USE_TLS"))
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+
 
 
 LANGUAGE_CODE = 'ru'

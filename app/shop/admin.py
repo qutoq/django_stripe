@@ -16,6 +16,15 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ['paid']
     inlines = [OrderItemInline]
 
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Order, OrderAdmin)
