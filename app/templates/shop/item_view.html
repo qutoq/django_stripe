@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container ">
+    <div class="row g-0">
+        <div class="col-md-6 py-5 px-5">
+            {% if item.image %}
+                <img src="{{item.image.url}}" alt="" class="img-fluid rounded mx-auto d-block">
+            {% else %}
+                <img src="{% static 'img/null.jpg' %}" alt="" class="img-fluid rounded mx-auto d-block" >
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <div class="container py-5">
+                <h1>{{ item.name }}</h1>
+                <h3 class="price">${{ item.get_display_price }}</h3>
+                <p class="text-wrap" style="width: 6rem;">{{ item.description|linebreaks }}</p>
+                <form action="/buy/{{ item.id }}/" method="POST" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success my-2">Купить 1 штуку</button>
+                </form>
+                <form action="{% url 'cart:cart_add' item.id %}" method="post" class="inline">
+                    {% csrf_token %}
+                    <input type="submit" value="Добавить в корзину" class="btn btn-secondary my-2 inline">
+                    {{ cart_item_form }}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

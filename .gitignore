@@ -1,5 +1,6 @@
 __pycache__/
-staticfiles/
+staticfiles/    
+.env.db
 
 *.py[cod]
 *$py.class
