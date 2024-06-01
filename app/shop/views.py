@@ -5,7 +5,6 @@ from cart.forms import CartAddItemForm, OrderForm
 from cart.cart import Cart
 from .stripy import new_stripe_session, add_tax
 from django_stripe.settings import DOMAIN
-from .task import send_email_task
 
 def main(request):
     items = Item.objects.all()
@@ -43,7 +42,6 @@ def new_order(request):
             line.append(op)
             OrderItem.objects.create(order=order, item=item['item'], price=item['price'], quantity=item['quantity'])
 
-        send_email_task.delay()
         session = new_stripe_session(line, order.discount, order.tax, order, "/cart")
 
         return redirect(session.url, code=303)

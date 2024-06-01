@@ -11,7 +11,7 @@ urlpatterns = [
     path('buy/<int:id>/', views.buy_item, name='buy_item'),
     path('create/', views.new_order, name='order_create'),
     path('success/', views.success, name='success'),
-    #path('webhook/', stripy.webhook_stripe, name='webhook'),
+    path('webhook/', stripy.stripe_webhook, name='webhook'),
 ]
 
 app_name = 'shop'
