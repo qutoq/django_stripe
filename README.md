@@ -19,12 +19,10 @@ sudo docker-compose up --build
 При первом запуске:
 ```
 sudo bash migrate.sh 
-```
-```
 sudo docker-compose exec web python manage.py createsuperuser
 ```
 
-Теперь в `/admin' можно добавлять свои товары, скидки и налоги
+Теперь в `/admin` можно добавлять свои товары, скидки и налоги
 
 Но! Для локального тестирования вебхука нужно
 ```
