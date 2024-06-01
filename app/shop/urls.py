@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
-#from .stripy import webhook_stripe
+from . import stripy
 
 
 urlpatterns = [
@@ -11,7 +11,7 @@ urlpatterns = [
     path('buy/<int:id>/', views.buy_item, name='buy_item'),
     path('create/', views.new_order, name='order_create'),
     path('success/', views.success, name='success'),
-    #path('webhook/', webhook_stripe, name='webhook'),
+    #path('webhook/', stripy.webhook_stripe, name='webhook'),
 ]
 
 app_name = 'shop'
