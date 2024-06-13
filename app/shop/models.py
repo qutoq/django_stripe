@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.core.validators import MaxValueValidator, MinValueValidator
 from .stripy import add_coupon
 
@@ -11,6 +12,10 @@ class Item(models.Model):
 
     def get_display_price(self):
         return "{0:.2f}".format(self.price / 100)
+    
+    def get_absolute_url(self):
+        return reverse('shop:item_view', kwargs={'id': self.id})
+
 
     def __str__(self):
         return str(self.name) + ' | ' + self.get_display_price()

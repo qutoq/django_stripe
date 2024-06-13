@@ -7,18 +7,14 @@ services:
       context: ./app
       dockerfile: Dockerfile
     image: app
-    #command: python manage.py runserver 0.0.0.0:8000
     command: gunicorn django_stripe.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - ./app/:/home/app/web
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/staticfiles/media
-    #ports:
-    #  - 8000:8000
     expose:
       - 8000
     depends_on:
-      #- migration
       - db
       - redis
     networks: 
@@ -30,7 +26,6 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      #- "POSTGRES_HOST_AUTH_METHOD=trust"
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=pass
       - POSTGRES_DB=dat
@@ -84,18 +79,6 @@ services:
       - redis
     networks:
       - mynetwork
-
-  #migration:
-  #  container_name: migration
-  #  image: app
-  #  command: python /code/manage.py migrate --run-syncdb --noinput
-  #  volumes:
-  #    - .:/code
-  #  depends_on:
-  #    - db
-  #  networks:
-  #    - mynetwork
-
 
 volumes:
   postgres_data:

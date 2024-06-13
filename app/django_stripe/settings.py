@@ -11,9 +11,9 @@ SECRET_KEY = env('django_key')
 STRIPE_SECRET_KEY = env('secret_key')
 SECRET_WEBHOOK = env('secret_webhook')
 DOMAIN = env('DOMAIN')
-DEBUG = env('DEBUG')
+DEBUG = bool(env('DEBUG'))
 #ALLOWED_HOSTS = [env('HOST')]
-
+SITE_ID = 1
 ALLOWED_HOSTS = ['*']
 
 
@@ -25,6 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
     'shop',
     'cart'
 ]
