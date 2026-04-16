@@ -1,6 +1,4 @@
-## Старый сайт: https://qutoq.pythonanywhere.com/
-
-Текущия версия с docker пока без хостинга
+## Cайт: https://shop.qutoq.site
 
 ### Запуск:
 ```
